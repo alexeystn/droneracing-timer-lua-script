@@ -2,7 +2,7 @@
 
 This simple Lua script is created for drone pilots who wants to practice in the conditions the most similar to a real race.
 
-VIDEO here
+https://www.youtube.com/watch?v=hj8fPDgjJTs
 
 ### How to use
 * Place you drone on a starting grid, put your FPV-goggles on and arm your quad.
