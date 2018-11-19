@@ -2,7 +2,7 @@
 
 This simple Lua script is created for drone pilots who wants to refine their skills in the conditions the most similar to a real race.
 
-The script emulates start and finish signals.
+The script plays start and finish sounds for a quad race.
 
 https://www.youtube.com/watch?v=hj8fPDgjJTs
 
@@ -33,7 +33,11 @@ This script was successfully tested on Taranis Q X7 with OpenTX 2.2.2.
 It should also work on Taranis X9 and X-Lite.
 
 If you face any issues, feel free to contact me.
+
 https://t.me/AlexeyStn
+
 Your feedback is welcome!
+
+-------
 
 Inspired by GoRace script from [RCdiy.ca](http://rcdiy.ca/quad-race-start-sequence-gorace/)
