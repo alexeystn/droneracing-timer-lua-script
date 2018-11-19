@@ -1,8 +1,8 @@
 ### Drone Racing Timer Lua script for OpenTX
 
-This simple Lua script is created for drone pilots who wants to refine their skills in the conditions the most similar to a real race.
+This Lua script plays start and finish sounds for a quad race.
 
-The script plays start and finish sounds for a quad race.
+It was created for drone pilots who wants to refine their skills in the conditions the most similar to the real competition :-)
 
 https://www.youtube.com/watch?v=hj8fPDgjJTs
 
