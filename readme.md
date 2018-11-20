@@ -24,7 +24,7 @@ All time intervals and a switch are configurable:
 * Download [zip-archive](https://github.com/alexeystn/droneracing-timer-lua-script/archive/master.zip) of this repository.
 * Copy the content of /TELEMETRY/ folder to /SCRIPTS/TELEMETRY/ folder on your SD card. It contains 'race.lua' file and 'race' folder with 4 wav-files.
 * Open Telemetry page of your model and select the custom script ‘race’ for any of your telemetry screens.
-* Long press 'Menu' button on the main screen of your model to switch to the script's screen.
+* Long press 'Page' button on the main screen of your model to switch to the script's screen.
 
 ![IMG](https://github.com/alexeystn/droneracing-timer-lua-script/blob/master/images/scr0.png)
  
