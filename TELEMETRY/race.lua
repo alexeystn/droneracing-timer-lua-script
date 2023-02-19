@@ -5,6 +5,7 @@ local isRaceStarted = false
 
 local currentSwitchState = false
 local previousSwitchState = false
+local isEnterKeyPressed = false
 
 local displayedTime = 0
 local startTime = 0
@@ -23,6 +24,7 @@ local isFieldActive = false
 local xOffset = 16
 
 local scriptPath = "/SCRIPTS/TELEMETRY/RACE/"
+local enterString = "ENT"
 
 -- default configuration
 local config = {time = 120, warning = 10, mindelay = 2, maxdelay = 5, switch = 1}
@@ -72,12 +74,24 @@ end
 
 
 local function getSwitchState()
-  local switchName = string.lower(switches[config.switch])
-  local switchId = getFieldInfo(switchName).id
+  local switchName = switches[config.switch]
+  if switchName == enterString then
+    return isEnterKeyPressed
+  end
+  local switchId = getFieldInfo(string.lower(switchName)).id
   if getValue(switchId) > 100 then
     return true
   else
     return false
+  end
+end
+
+
+local function getSwitchString(switchName)
+  if switchName == enterString then
+    return enterString
+  else
+    return switchName.."\193"
   end
 end
 
@@ -93,12 +107,13 @@ local function init_func()
       print(switchName.." - No")
     end
   end
+  switches[#switches+1] = enterString
   
   if LCD_W > 128 then
     xOffset = xOffset + 42
   end  
   
-  config.switch = #switches
+  config.switch = 1
   loadConfig()
    
   fields[1] = {label = "Time", min = 10, max = 300, step = 5, value = config.time, typ = "tim"}
@@ -241,7 +256,7 @@ local function run_func(event)
       if fields[i].typ == "tim" then
         lcd.drawTimer(xOffset + 66, 8*i - 2, fields[i].value, flag)
       elseif fields[i].typ == "sw" then
-        lcd.drawText(xOffset + 66, 8*i - 2, switches[fields[i].value].."\193", flag)
+        lcd.drawText(xOffset + 66, 8*i - 2, getSwitchString(switches[fields[i].value]), flag)
       elseif fields[i].typ == "btn" then
         lcd.drawText(xOffset + 26, 8*i + 3, fields[i].value, flag)
       end 
@@ -271,12 +286,18 @@ local function run_func(event)
       end
     else
       if getTime() > afterTime then
-        lcd.drawText(xOffset - 3, 52, "Toggle "..string.upper(switches[config.switch]).."\193 to start")
+        lcd.drawText(xOffset - 3, 52, "Toggle "..getSwitchString(switches[config.switch]).." to start")
       end
     end
 
     if event == EVT_EXIT_BREAK then
       isRaceModeActive = false
+    end
+    
+    if event == EVT_ENTER_BREAK then
+      isEnterKeyPressed = true
+    else
+      isEnterKeyPressed = false
     end
 
   end
