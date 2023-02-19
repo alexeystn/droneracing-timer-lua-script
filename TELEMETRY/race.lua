@@ -82,19 +82,30 @@ local function getSwitchState()
 end
 
 
+
+local function foo(switchName)
+  
+    local switchId = getFieldInfo(string.lower(switchName)).id
+    --local res = getValue(switchId) 
+
+end
+
+
 local function init_func()
   
-  local ver, radio, maj, minor, rev = getVersion()
-  radio = string.sub(radio, 1, 2)
-  if radio == 'x7' then 
-    switches = {'SA', 'SB', 'SC', 'SD', 'SF', 'SH'}
-  elseif radio == 'x9' then 
-    switches = {'SA', 'SB', 'SC', 'SD', 'SE', 'SF', 'SG', 'SH'}
-    xOffset = xOffset + 42
-  elseif radio == 'xl' then
-    switches = {'SA', 'SB', 'SC', 'SD'}
-  -- TODO: else exception
+  for i = 1, 10 do
+    local switchName = 's'..string.char(i + 96)
+    if getFieldInfo(switchName) then
+      print(switchName.." - Yes")
+      switches[#switches+1] = string.upper(switchName)
+    else
+      print(switchName.." - No")
+    end
   end
+  
+  if LCD_W > 128 then
+    xOffset = xOffset + 42
+  end  
   
   config.switch = #switches
   loadConfig()
