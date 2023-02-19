@@ -1,5 +1,4 @@
 local
-SCRIPTS
 utils/*.wav
 settings.dat
 race.luac

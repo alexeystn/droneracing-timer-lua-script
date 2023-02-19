@@ -23,7 +23,7 @@ local selectedField = 1
 local isFieldActive = false
 local xOffset = 16
 
-local scriptPath = "/SCRIPTS/TELEMETRY/RACE/"
+local scriptPath = "/SCRIPTS/TOOLS/RACE/"
 local enterString = "ENT"
 
 -- default configuration
