@@ -82,15 +82,6 @@ local function getSwitchState()
 end
 
 
-
-local function foo(switchName)
-  
-    local switchId = getFieldInfo(string.lower(switchName)).id
-    --local res = getValue(switchId) 
-
-end
-
-
 local function init_func()
   
   for i = 1, 10 do
