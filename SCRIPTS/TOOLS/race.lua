@@ -23,7 +23,7 @@ local switches = {}
 local fields = {}
 local selectedField = 1
 local isFieldActive = false
-local xOffset = 16
+local w = 0  -- large screen flag
 
 local scriptPath = "/SCRIPTS/TOOLS/RACE/"
 local enterString = "ENT"
@@ -111,8 +111,8 @@ local function init_func()
   end
   switches[#switches+1] = enterString
   
-  if LCD_W > 128 then
-    xOffset = xOffset + 42
+  if LCD_H > 96 then
+    w = 1
   end  
   
   config.switch = 1
@@ -193,21 +193,17 @@ local function run_func(event)
     end
     
     lcd.clear()
-    lcd.drawTimer(xOffset - 5, 8, displayedTime, XXLSIZE)
+    lcd.drawTimer(LCD_W/2 - 51 - 30*w, 8 + 12*w, displayedTime, XXLSIZE)
     
     if isRaceStarted then
       if not startSoundPlayed then
-        if config.countdown == 1 then
-          lcd.drawNumber(xOffset + 44, 50, nCountDown - beepCounter + 1, MIDSIZE)
-        else
-          lcd.drawText(xOffset + 26, 50, "Ready", MIDSIZE)
-        end
+        lcd.drawText(LCD_W/2 - 19 - 10*w, 60*w + 50, "Ready", MIDSIZE)
       else
-        lcd.drawText(xOffset + 38, 50, "GO!", MIDSIZE)
+        lcd.drawText(LCD_W/2 - 9 - 7*w, 60*w + 50, "GO!", MIDSIZE)
       end
     else
       if getTime() > afterTime then
-        lcd.drawText(xOffset - 3, 52, "Toggle "..getSwitchString(switches[config.switch]).." to start")
+        lcd.drawText(LCD_W/2 - 51 - 24*w, 60*w + 52, "Toggle "..getSwitchString(switches[config.switch]).." to start")
       end
     end
 
@@ -275,7 +271,7 @@ local function run_func(event)
     local flag = 0
     
     for i = 1, #fields do
-      lcd.drawText(xOffset, 8*i - 2, fields[i].label)
+      lcd.drawText(LCD_W/2 - 44 - 48*w, (8 + 12*w) * i - 2, fields[i].label)
       if i == selectedField and not (isFieldActive and blinkCounter < 7) then
         flag = INVERS
       else
@@ -283,11 +279,11 @@ local function run_func(event)
       end
       
       if fields[i].typ == "tim" then
-        lcd.drawTimer(xOffset + 66, 8*i - 2, fields[i].value, flag)
+        lcd.drawTimer(LCD_W/2 + 20 + 22*w, (8 + 12*w) * i - 2, fields[i].value, flag)
       elseif fields[i].typ == "sw" then
-        lcd.drawText(xOffset + 66, 8*i - 2, getSwitchString(switches[fields[i].value]), flag)
+        lcd.drawText(LCD_W/2 + 20 + 22*w, (8 + 12*w) * i - 2, getSwitchString(switches[fields[i].value]), flag)
       elseif fields[i].typ == "btn" then
-        lcd.drawText(xOffset + 26, 8*i + 3, fields[i].value, flag)
+        lcd.drawText(LCD_W/2 - 18 - 6*w, (8 + 12*w) * i + 3, fields[i].value, flag)
       end 
       
     end
