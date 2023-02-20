@@ -119,7 +119,7 @@ local function init_func()
   loadConfig()
    
   fields[1] = {label = "Time", min = 10, max = 300, step = 5, value = config.time, typ = "tim"}
-  fields[2] = {label = "Warning", min = 1, max = 60, step = 1, value = config.warning, typ = "tim"}
+  fields[2] = {label = "Warning", min = 0, max = 60, step = 1, value = config.warning, typ = "tim"}
   fields[3] = {label = "Min delay", min = 1, max = 30, step = 1, value = config.mindelay, typ = "tim"}
   fields[4] = {label = "Max delay", min = 1, max = 30, step = 1, value = config.maxdelay, typ = "tim"}
   fields[5] = {label = "Switch", min = 1, max = #switches, step = 1, value = config.switch, typ = "sw"}
@@ -178,7 +178,7 @@ local function run_func(event)
         end
       end
       if not warningSoundPlayed then 
-        if currentTime >= warningTime then
+        if config.warning > 0 and currentTime >= warningTime then
           playSound("warning")
           warningSoundPlayed = true
         end
