@@ -13,6 +13,7 @@ local startTime = 0
 local warningTime = 0
 local finishTime = 0
 local afterTime = 0
+local blinkCounter = 0
 
 local startSoundPlayed = false
 local warningSoundPlayed = false
@@ -224,7 +225,14 @@ local function run_func(event)
 
     if event == EVT_ENTER_BREAK then
       isFieldActive = not isFieldActive
+      if isFieldActive then
+        blinkCounter = 0
+      end
     end
+    
+    if event == EVT_EXIT_BREAK then
+      isFieldActive = false
+    end    
     
     if isFieldActive and fields[selectedField].typ == "btn" then
       saveConfig()
@@ -268,7 +276,7 @@ local function run_func(event)
     
     for i = 1, #fields do
       lcd.drawText(xOffset, 8*i - 2, fields[i].label)
-      if i == selectedField then
+      if i == selectedField and not (isFieldActive and blinkCounter < 7) then
         flag = INVERS
       else
         flag = 0
@@ -290,6 +298,11 @@ local function run_func(event)
     config.maxdelay  = fields[4].value
     config.switch    = fields[5].value
     
+  end
+  
+  blinkCounter = blinkCounter + 1
+  if blinkCounter > 14 then
+    blinkCounter = 0
   end
 
 	return 0
