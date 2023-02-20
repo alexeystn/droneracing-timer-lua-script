@@ -1,3 +1,4 @@
+local toolName = "TNS|Race timer|TNE"
 
 local isRaceModeActive = false
 local isRaceInitialized = false
@@ -127,8 +128,8 @@ local function init_func()
 end
 
 
-local function bg_func()
--- is called periodically, the screen visibility does not matter
+local function run_func(event)
+-- is called periodically
   
   if isRaceModeActive then
     
@@ -189,17 +190,37 @@ local function bg_func()
         end
       end         
     end
-  end
-  
-  return 0
-  
-end
+    
+    lcd.clear()
+    lcd.drawTimer(xOffset - 5, 8, displayedTime, XXLSIZE)
+    
+    if isRaceStarted then
+      if not startSoundPlayed then
+        if config.countdown == 1 then
+          lcd.drawNumber(xOffset + 44, 50, nCountDown - beepCounter + 1, MIDSIZE)
+        else
+          lcd.drawText(xOffset + 26, 50, "Ready", MIDSIZE)
+        end
+      else
+        lcd.drawText(xOffset + 38, 50, "GO!", MIDSIZE)
+      end
+    else
+      if getTime() > afterTime then
+        lcd.drawText(xOffset - 3, 52, "Toggle "..getSwitchString(switches[config.switch]).." to start")
+      end
+    end
 
+    if event == EVT_EXIT_BREAK then
+      isRaceModeActive = false
+    end
+    
+    if event == EVT_ENTER_BREAK then
+      isEnterKeyPressed = true
+    else
+      isEnterKeyPressed = false
+    end
 
-local function run_func(event)
---  is called periodically when custom telemetry screen is visible
-
-  if not isRaceModeActive then
+  else
 
     if event == EVT_ENTER_BREAK then
       isFieldActive = not isFieldActive
@@ -268,45 +289,11 @@ local function run_func(event)
     config.mindelay  = fields[3].value
     config.maxdelay  = fields[4].value
     config.switch    = fields[5].value
-      
-  else
-  
-    lcd.clear()
-    lcd.drawTimer(xOffset - 5, 8, displayedTime, XXLSIZE)
     
-    if isRaceStarted then
-      if not startSoundPlayed then
-        if config.countdown == 1 then
-          lcd.drawNumber(xOffset + 44, 50, nCountDown - beepCounter + 1, MIDSIZE)
-        else
-          lcd.drawText(xOffset + 26, 50, "Ready", MIDSIZE)
-        end
-      else
-        lcd.drawText(xOffset + 38, 50, "GO!", MIDSIZE)
-      end
-    else
-      if getTime() > afterTime then
-        lcd.drawText(xOffset - 3, 52, "Toggle "..getSwitchString(switches[config.switch]).." to start")
-      end
-    end
-
-    if event == EVT_EXIT_BREAK then
-      isRaceModeActive = false
-    end
-    
-    if event == EVT_ENTER_BREAK then
-      isEnterKeyPressed = true
-    else
-      isEnterKeyPressed = false
-    end
-
   end
 
 	return 0
   
 end
 
-return { init=init_func, background=bg_func, run=run_func }
-
-
-
+return { init=init_func, run=run_func }
